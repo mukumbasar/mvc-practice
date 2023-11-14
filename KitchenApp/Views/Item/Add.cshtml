@@ -1,0 +1,67 @@
+﻿﻿@using Microsoft.AspNetCore.Identity
+@using KitchenApp.Entities;
+@inject SignInManager<AppUser> SignInManager
+
+@model RecipeItem
+
+@if(SignInManager.IsSignedIn(User))
+{
+    <div class="row">
+        <div class="col-md-8 mb-3">
+            <form asp-action="Add" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control">
+                    <span asp-validation-for="Name"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Amount" class="form-label"></label>
+                    <input asp-for="Amount" class="form-control">
+                    <span asp-validation-for="Amount"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Unit" class="form-label"></label>
+                    <input asp-for="Unit" class="form-control">
+                    <span asp-validation-for="Unit"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label"></label>
+                    <input asp-for="Description" class="form-control">
+                    <span asp-validation-for="Description"></span>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Item</button>
+            </form>
+        </div>
+    </div>
+}
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Unit</th>
+            <th scope="col">Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.List)
+        {
+            <tr>
+                <td>@item.RecipeItemId</td>
+                <td>@item.Name</td>
+                <td>@item.Amount</td>
+                <td>@item.Unit</td>
+                <td>@item.Description</td>
+                @if(SignInManager.IsSignedIn(User))
+                {
+                    <td> <a class="text-danger" asp-route-id="@item.RecipeItemId" asp-action="Delete">Delete</a></td>
+                    <td> <a class="text-danger" asp-route-id="@item.RecipeItemId" asp-action="Update">Update</a></td>
+                }
+            </tr>
+        }     
+    </tbody>
+</table>
